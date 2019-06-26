@@ -95,6 +95,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="progressbar.exe" />
     <Content Include="version.xml" />
   </ItemGroup>
   <ItemGroup>
