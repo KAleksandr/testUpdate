@@ -23,7 +23,7 @@ namespace progressbar
         private void button1_Click(object sender, EventArgs e)
         {
             Download();
-            checkUpdates();
+            
         }
         private void download_Completed()
         {
@@ -81,7 +81,7 @@ namespace progressbar
                 }
 
 
-                
+                checkUpdates();
 
             }
         }
