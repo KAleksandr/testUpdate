@@ -24,6 +24,7 @@ namespace progressbar
         {
             Download();
             
+
         }
         private void download_Completed()
         {
@@ -70,40 +71,41 @@ namespace progressbar
             }
             if (thisVersion < ver)
             {
-                if (File.Exists("launcher.update")) { File.Delete("launcher.update"); }
-                MessageBox.Show("new version " + version);
+                //if (File.Exists("launcher.update")) { File.Delete("launcher.update"); }
+                //MessageBox.Show("new version " + version);
                 MessageBox.Show(this, "Виявлено нову версію (" + doc.GetElementsByTagName("myprogram")[0].InnerText + ")" + Environment.NewLine +
                                       "Додаток буде автоматично оновлено і перезапуститься.", Application.ProductName + " v" + Application.ProductVersion, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 using (WebClient wc = new WebClient())
                 {
                     // wc.DownloadProgressChanged += (s, te) => { progressBar1.Value = te.ProgressPercentage; };
                     wc.DownloadFile(new Uri(url2), "launcher.update");
+                    if (File.Exists("launcher.update"))
+                    checkUpdates();
                 }
 
 
-                checkUpdates();
-
+                
             }
         }
         public void checkUpdates()
         {
             try
             {
-                if (File.Exists("launcher.update") && new Version(FileVersionInfo.GetVersionInfo("launcher.update").FileVersion) > new Version(Application.ProductVersion))
+               // if (File.Exists("launcher.update") && new Version(FileVersionInfo.GetVersionInfo("launcher.update").FileVersion) > new Version(Application.ProductVersion))
                 {
                     Process.Start("updater.exe", "progressbar.exe  launcher.update");
                     Process.GetCurrentProcess().CloseMainWindow();
                 }
-                else
+               // else
                 {
-                    if (File.Exists("launcher.update")) { File.Delete("launcher.update"); }
-                    Download();
+                    //if (File.Exists("launcher.update")) { File.Delete("launcher.update"); }
+                    //Download();
                 }
             }
             catch (Exception)
             {
-                if (File.Exists("launcher.update")) { File.Delete("launcher.update"); }
-                Download();
+                //if (File.Exists("launcher.update")) { File.Delete("launcher.update"); }
+                //Download();
             }
         }
 
