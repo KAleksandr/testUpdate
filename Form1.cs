@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -15,9 +15,13 @@ namespace progressbar
         private string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"update.exe");
         private int thisVersion = Convert.ToInt32(Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".", ""));
         private string thisVersionS = (Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
         public Form1()
         {
+           
             InitializeComponent();
+            
+            MessageBox.Show(thisVersionS);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -73,14 +77,23 @@ namespace progressbar
             {
                 //if (File.Exists("launcher.update")) { File.Delete("launcher.update"); }
                 //MessageBox.Show("new version " + version);
-                MessageBox.Show(this, "Виявлено нову версію (" + doc.GetElementsByTagName("myprogram")[0].InnerText + ")" + Environment.NewLine +
-                                      "Додаток буде автоматично оновлено і перезапуститься.", Application.ProductName + " v" + Application.ProductVersion, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show(this, "Виявлено нову версію (" + doc.GetElementsByTagName("myprogram")[0].InnerText + ")" + Environment.NewLine +
+                //                      "Додаток буде автоматично оновлено і перезапуститься.", Application.ProductName + " v" + Application.ProductVersion, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 using (WebClient wc = new WebClient())
                 {
                     // wc.DownloadProgressChanged += (s, te) => { progressBar1.Value = te.ProgressPercentage; };
                     wc.DownloadFile(new Uri(url2), "launcher.update");
                     if (File.Exists("launcher.update"))
-                    checkUpdates();
+                    {
+                        MessageBox.Show(this, "Виявлено нову версію (" +
+                                              doc.GetElementsByTagName("myprogram")[0].InnerText + ")" +
+                                              Environment.NewLine +
+                                              "Додаток буде автоматично оновлено і перезапуститься.",
+                            Application.ProductName + " v" + Application.ProductVersion, MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                        if (File.Exists("version.xml")) { File.Delete("version.xml"); }
+                        checkUpdates();
+                    }
                 }
 
 
@@ -91,7 +104,8 @@ namespace progressbar
         {
             try
             {
-               // if (File.Exists("launcher.update") && new Version(FileVersionInfo.GetVersionInfo("launcher.update").FileVersion) > new Version(Application.ProductVersion))
+                if (File.Exists("launcher.update"))
+                // if (File.Exists("launcher.update") && new Version(FileVersionInfo.GetVersionInfo("launcher.update").FileVersion) > new Version(Application.ProductVersion))
                 {
                     Process.Start("updater.exe", "progressbar.exe  launcher.update");
                     Process.GetCurrentProcess().CloseMainWindow();
@@ -109,6 +123,10 @@ namespace progressbar
             }
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.Text += " ver." +  Application.ProductVersion;
+        }
     }
 
 }
