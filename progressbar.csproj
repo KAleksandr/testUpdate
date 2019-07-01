@@ -117,7 +117,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="launcher.xml.exe" />
+    <Content Include="launcher.xml" />
     <Content Include="updater.exe" />
     <Content Include="version.xml" />
   </ItemGroup>
